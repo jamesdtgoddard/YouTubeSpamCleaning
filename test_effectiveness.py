@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 NUMBER_OF_REPEATS = 100
-FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning"
+FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Data"
 PROPORTION_TESTING = 0.1
 ALL_FEATURES = [['LENGTH', 'CAPITALS', 'SYMBOLS'], ['LENGTH', 'SYMBOLS'], ['LENGTH', 'CAPITALS'], ['CAPITALS', 'SYMBOLS'], ['LENGTH'], ['CAPITALS'], ['SYMBOLS']]
 

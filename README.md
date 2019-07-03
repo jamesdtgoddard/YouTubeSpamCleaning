@@ -8,4 +8,4 @@ The file test_effectiveness.py runs the model using all combinations of features
 
 The first test using the features length, capitals and symbols is shown below:
 
-![First Results](https://raw.githubusercontent.com/jamesdtgoddard/YoutubeSpamCleaning/master/First\ Results\ (100).png)
+![First Results](https://raw.githubusercontent.com/jamesdtgoddard/YoutubeSpamCleaning/master/First_Results_(100).png)

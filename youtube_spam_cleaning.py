@@ -6,7 +6,7 @@ from random import random
 import glob
 
 #Set default parameters
-FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning"
+FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Data"
 FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS']
 PROPORTION_TESTING = 0.25
 
