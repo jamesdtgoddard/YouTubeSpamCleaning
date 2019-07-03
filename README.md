@@ -8,4 +8,4 @@ The file test_effectiveness.py runs the model using all combinations of features
 
 The first test using the features length, capitals and symbols is shown below:
 
-[First Results]: https://imgur.com/a/PCsj2HC "First Results"
+![alt text](https://imgur.com/a/PCsj2HC)
