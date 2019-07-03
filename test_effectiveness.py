@@ -34,6 +34,6 @@ ax.set_yticklabels(features)
 ax.invert_yaxis()  # labels read top-to-bottom
 ax.set_xlabel('Percentage above baseline')
 ax.set_ylabel('Features')
-ax.set_title('Comparing combinations of features.')
+ax.set_title('Comparing combinations of features')
 
 plt.show()

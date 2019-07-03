@@ -1,4 +1,4 @@
-# YoutubeSpamCleaning
+# Youtube Spam Cleaning
 
 A python script that tries to recognise whether or not a youtube comment is spam. Trained from this [dataset](https://archive.ics.uci.edu/ml/machine-learning-databases/00380/) found online.
 
