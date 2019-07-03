@@ -4,7 +4,7 @@ import numpy as np
 
 NUMBER_OF_REPEATS = 100
 FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning"
-PROPORTION_TESTING = 0.25
+PROPORTION_TESTING = 0.1
 ALL_FEATURES = [['LENGTH', 'CAPITALS', 'SYMBOLS'], ['LENGTH', 'SYMBOLS'], ['LENGTH', 'CAPITALS'], ['CAPITALS', 'SYMBOLS'], ['LENGTH'], ['CAPITALS'], ['SYMBOLS']]
 
 results = []
