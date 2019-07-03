@@ -7,7 +7,7 @@ import glob
 
 #Set default parameters
 FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Data"
-FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS']
+FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS']
 PROPORTION_TESTING = 0.25
 
 #Load all csv files into dataframe 'df'
@@ -68,6 +68,24 @@ def extractFeatures(features_list):
 				symbols.append(sum)
 		df['SYMBOLS'] = symbols
 
+	if('DIGITS' in features_list):
+		digits = []
+		if('LENGTH' in features_list):
+			for i in range(0, len(df['CONTENT'])):
+				sum = 0
+				for j in df['CONTENT'][i]:
+					if(j.isdigit()):
+						sum += 1
+				digits.append(float(sum / df['LENGTH'][i]))
+		else:
+			for i in df['CONTENT']:
+				sum = 0
+				for j in i:
+					if(j.isdigit()):
+						sum += 1
+				digits.append(sum)
+		df['DIGITS'] = digits
+
 	features = []
 	individual_features = []
 	for i in range(0, len(df['CONTENT'])):
@@ -78,6 +96,8 @@ def extractFeatures(features_list):
 			individual_features.append(df['CAPITALS'][i])
 		if('SYMBOLS' in features_list):
 			individual_features.append(df['SYMBOLS'][i])
+		if('DIGITS' in features_list):
+			individual_features.append(df['DIGITS'][i])
 		features.append(individual_features)
 	features = np.array(features)
 
@@ -107,9 +127,7 @@ def runModel():
 		else:
 			predictions.append(0)
 
-	actual_values = []
-	for i in test_labels:
-		actual_values.append(i) #Maybe remove loop
+	actual_values = test_labels
 
 	predictions_correct = 0
 	predictions_wrong = 0
