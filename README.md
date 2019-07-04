@@ -1,4 +1,4 @@
-# Youtube Spam Cleaning
+# YouTube Spam Cleaning
 
 This is a python script that tries to recognise whether or not a YouTube comment is spam or not. It uses a random forest classifier from sci-kit learn and is trained from this [dataset](https://archive.ics.uci.edu/ml/machine-learning-databases/00380/).
 
