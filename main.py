@@ -88,13 +88,13 @@ def extractFeatures(features_list):
 	word_features = {}
 
 	if('WORDS' in features_list):
-		spam_words = ['and','to','out','my','a']#,'this','the','on','you','check','of','video','for','me','it','i','if','youtube','you','subscribe','like','can','in','please','just','is','channel','have','so','your','be','will','guys','music','at','money','from','up','but','as','make','get','would','do','all','with','our','new','are','am','that','who','comment','videos','really','us','or','know','u','not','song','people','could','more','playlist','help','see','called','I\'m','should','out','give','making','working','some','website','does']
+		spam_words = ['and','to','out','my','a','this','the','on','you','check','of','video','for','me','it','i','if','youtube','you','subscribe','like','can','in','please','just','is','channel','have','so','your','be','will','guys','music','at','money','from','up','but','as','make','get','would','do','all','with','our','new','are','am','that','who','comment','videos','really','us','or','know','u','not','song','people','could','more','playlist','help','see','called','I\'m','should','out','give','making','working','some','website','does']
 		for i in spam_words:
 			word_features[i] = 0
 		for j in range(0, len(df['CONTENT'])):
 			for k in df['CONTENT'][j].split():
 				if(k.lower() in spam_words):
-					word_features[k.lower()] +=1
+					word_features[k.lower()] += 1
 			for i in word_features:
 				features = features.tolist()
 				features[j].append(word_features[i])
