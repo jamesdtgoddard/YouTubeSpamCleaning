@@ -7,9 +7,9 @@ import glob
 import csv
 
 #Set default parameters
-FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Data"
-FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS']
-PROPORTION_TESTING = 0.1
+FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Data" #Path to folder containing csv data files
+FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS'] #List of features to be used
+PROPORTION_TESTING = 0.1 #Percentage of data to be split for testing
 
 #Load all csv files into dataframe 'df'
 def importData(file_path):
@@ -25,7 +25,7 @@ def importData(file_path):
 
 	df = pd.concat(temporary_list, axis=0, ignore_index=True)
 
-#Create a list 'features' that contains all the extracted features listed in 'features_list'
+#Create a numpy array 'features' that contains all the extracted features listed in 'features_list'
 def extractFeatures(features_list, reextract_features):
 
 	if(reextract_features):

@@ -2,7 +2,7 @@ import Youtube_Spam_Cleaning
 import matplotlib.pyplot as plt
 import numpy as np
 
-NUMBER_OF_REPEATS = 1000
+NUMBER_OF_REPEATS = 200
 FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Data"
 PROPORTION_TESTING = 0.1
 ALL_FEATURES = [['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS'], ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS']]
