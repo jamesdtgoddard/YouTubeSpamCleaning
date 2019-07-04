@@ -107,20 +107,22 @@ def extractFeatures(features_list, reextract_features):
 
 		if('WORDS' in features_list):
 			spam_words = ['and','to','out','my','a']#,'this','the','on','you','check','of','video','for','me','it','i','if','youtube','you','subscribe','like','can','in','please','just','is','channel','have','so','your','be','will','guys','music','at','money','from','up','but','as','make','get','would','do','all','with','our','new','are','am','that','who','comment','videos','really','us','or','know','u','not','song','people','could','more','playlist','help','see','called','I\'m','should','out','give','making','working','some','website','does']
+			last_number = 0
 			for i in spam_words:
 				word_features[i] = 0
 			for j in range(0, len(df['CONTENT'])):
 				for k in df['CONTENT'][j].split():
 					if(k.lower() in spam_words):
-						word_features[i] +=1
+						word_features[k.lower()] += 1
 				for i in word_features:
 					features = features.tolist()
 					features[j].append(word_features[i])
 					features = np.array(features)
 				for i in spam_words:
 					word_features[i] = 0
-				if(j/1955 % 0.1 == 0):
-					print("~ "+str(j/1955 * 100)+"% of features extracted.")
+				if(int(j/1955 * 100) % 10 == 0 and int(j/1955 * 100) != last_number):
+					print("~ "+str(int(j/1955 * 100))+"% of features extracted.")
+					last_number += 10
 
 		features = features.tolist()
 
@@ -181,9 +183,7 @@ def runModel(train_features, test_features, train_labels, test_labels):
 			predictions_wrong += 1
 	predictions_ratio = float(predictions_correct / (predictions_correct + predictions_wrong))
 
-	pickle.dump(model, open('model.sav', 'wb'))
-
-	return predictions, actual_values, predictions_ratio
+	return predictions, actual_values, predictions_ratio, model
 
 #Guess 1 or 0 to get an idea of the proportion we would expect to get right randomly
 def runRandom(actual_values):
@@ -221,7 +221,7 @@ def main(file_path, features_list, proportion_testing, reextract_features):
 	importData(file_path)
 	features = extractFeatures(features_list, reextract_features)
 	train_features, test_features, train_labels, test_labels = splitData(proportion_testing, features)
-	predictions, actual_values, predictions_ratio = runModel(train_features, test_features, train_labels, test_labels)
+	predictions, actual_values, predictions_ratio, model = runModel(train_features, test_features, train_labels, test_labels)
 	random_ratio = runRandom(actual_values)
 	return checkImprovement(predictions_ratio, random_ratio)
 
@@ -229,7 +229,7 @@ def train(file_path, features_list, proportion_testing, reextract_features):
 	importData(file_path)
 	features = extractFeatures(features_list, reextract_features)
 	train_features, test_features, train_labels, test_labels = splitData(proportion_testing, features)
-	predictions, actual_values, predictions_ratio = runModel(train_features, test_features, train_labels, test_labels)
-	random_ratio = runRandom(actual_values)
+	predictions, actual_values, predictions_ratio, model = runModel(train_features, test_features, train_labels, test_labels)
+	pickle.dump(model, open('model.sav', 'wb'))
 
-train(FILE_PATH, FEATURES_LIST, PROPORTION_TESTING, True)
+#train(FILE_PATH, FEATURES_LIST, PROPORTION_TESTING, True)

@@ -94,7 +94,7 @@ def extractFeatures(features_list):
 		for j in range(0, len(df['CONTENT'])):
 			for k in df['CONTENT'][j].split():
 				if(k.lower() in spam_words):
-					word_features[i] +=1
+					word_features[k.lower()] +=1
 			for i in word_features:
 				features = features.tolist()
 				features[j].append(word_features[i])

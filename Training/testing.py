@@ -2,10 +2,10 @@ import training
 import matplotlib.pyplot as plt
 import numpy as np
 
-NUMBER_OF_REPEATS = 5
+NUMBER_OF_REPEATS = 1000
 FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Training/Data"
 PROPORTION_TESTING = 0.1
-ALL_FEATURES = [['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS'], ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS']]
+ALL_FEATURES = [['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS'], ['Length', 'SYMBOLS', 'CAPITALS', 'DIGITS']]
 
 results = []
 individual_results = []
