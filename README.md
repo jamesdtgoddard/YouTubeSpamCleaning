@@ -1,14 +1,13 @@
 # Youtube Spam Cleaning
 
-A python script that tries to recognise whether or not a youtube comment is spam. Trained from this [dataset](https://archive.ics.uci.edu/ml/machine-learning-databases/00380/) found online.
+This is a python script that tries to recognise whether or not a YouTube comment is spam or not. It uses a random forest classifier from sci-kit learn and is trained from this [dataset](https://archive.ics.uci.edu/ml/machine-learning-databases/00380/).
 
-Initially the model used the length, number of capital letters and number of symbols from each comment as features. These features are used to train a random forest classifier using scikit-learn. The following bar chart shows a comparison of the effectiveness of each combination of features:
+The model currently uses the length of each comment, the number of capital letters in each comment, the number of symbols in each comment, the number of digits in each comment and the frequency of certain popular words in each comment. The model is most effective when all features are used simultaneously and it can currently recognise spam with around 80% accuracy. The bar charts below compare the effectiveness of different combinations of these features:
 
-![First Results](https://raw.githubusercontent.com/jamesdtgoddard/YoutubeSpamCleaning/master/First_Results_(100).png)
+![LCS](https://raw.githubusercontent.com/jamesdtgoddard/YoutubeSpamCleaning/master/Tests/LCS.png)
 
-We see that the model is most effect when all three features are used together.
+![LCSD](https://raw.githubusercontent.com/jamesdtgoddard/YoutubeSpamCleaning/master/Tests/LCSD.png)
 
-I have since added a fourth feature, the number of digits used in each comment. Using this feature very slightly improved the model's effectiveness as shown below:
+![LCSDW](https://raw.githubusercontent.com/jamesdtgoddard/YoutubeSpamCleaning/master/Tests/LCSDW.png)
 
-![Digits Results](https://raw.githubusercontent.com/jamesdtgoddard/YoutubeSpamCleaning/master/LCSD.png)
-
+*Effectiveness is measured by running the model 100+ times on each set of features being compared. The percentage given is the average difference between the percentage of comments the model labels correctly and the percentage of comments labelled correctly by a random number generator. Note that the random number generator usually labels around 50% of the comments correctly.*

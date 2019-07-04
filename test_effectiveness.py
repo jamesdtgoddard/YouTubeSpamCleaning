@@ -2,10 +2,10 @@ import Youtube_Spam_Cleaning
 import matplotlib.pyplot as plt
 import numpy as np
 
-NUMBER_OF_REPEATS = 100
+NUMBER_OF_REPEATS = 1000
 FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Data"
 PROPORTION_TESTING = 0.1
-ALL_FEATURES = [['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS'], ['LENGTH', 'SYMBOLS', 'CAPITALS']]
+ALL_FEATURES = [['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS'], ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS']]
 
 results = []
 individual_results = []
@@ -13,11 +13,13 @@ full_length =len(ALL_FEATURES) * NUMBER_OF_REPEATS
 amount_done = 0
 last_printed = 0
 for i in ALL_FEATURES:
+	REEXTRACT_FEATURES = True
 	for j in range(0, NUMBER_OF_REPEATS):
-		individual_results.append(Youtube_Spam_Cleaning.main(FILE_PATH, i, PROPORTION_TESTING))
+		individual_results.append(Youtube_Spam_Cleaning.main(FILE_PATH, i, PROPORTION_TESTING, REEXTRACT_FEATURES))
+		REEXTRACT_FEATURES = False
 		amount_done += 1
 		if(int((amount_done / full_length) * 100) != last_printed):
-			print(str(int((amount_done / full_length) * 100))+"% done.")
+			print(str(int((amount_done / full_length) * 100))+"% of repeats done.")
 			last_printed = int((amount_done / full_length) * 100)
 	results.append(individual_results)
 	individual_results = []
@@ -32,7 +34,7 @@ for i in results:
 plt.rcdefaults()
 fig, ax = plt.subplots()
 
-features = ('LCSD', 'LCS')
+features = ('LCSDW', 'LCSD')
 y_pos = np.arange(len(features))
 
 ax.barh(y_pos, average_results, align='center')
