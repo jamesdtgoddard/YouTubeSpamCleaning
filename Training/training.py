@@ -7,12 +7,13 @@ import glob
 import csv
 import pickle
 
-#Set default parameters
-FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Training/Data" #Path to folder containing csv data files
-FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'URLS', 'WORDS'] #List of features to be used
-PROPORTION_TESTING = 0.001 #Percentage of data to be split for testing
+# Set file path to the project folder, the list of features to be trained and the 
+# proportion of the data to be split for testing
+FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Training/Data"
+FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'URLS', 'WORDS']
+PROPORTION_TESTING = 0.001
 
-#Load all csv files into dataframe 'df'
+# Load all csv files into dataframe 'df'
 def importData(file_path):
 
 	global df
@@ -26,14 +27,18 @@ def importData(file_path):
 
 	df = pd.concat(temporary_list, axis=0, ignore_index=True)
 
-#Create a numpy array 'features' that contains all the extracted features listed in 'features_list'
+# Create a numpy array 'features' that contains all the extracted
+# features listed in 'features_list'
 def extractFeatures(features_list, reextract_features):
 
 	if(reextract_features):
 
+		# Finds the length of each comment
 		if('LENGTH' in features_list):
 			df['LENGTH'] = df['CONTENT'].str.len()
 
+		# Finds the frequency of upper case characters in each comment
+		# unless length is unavailable
 		if('CAPITALS' in features_list):
 			capitals = []
 			if('LENGTH' in features_list):
@@ -52,6 +57,8 @@ def extractFeatures(features_list, reextract_features):
 					capitals.append(sum)
 			df['CAPITALS'] = capitals
 
+		# Finds the frequency of symbols in each comment
+		# unless length is unavailable
 		if('SYMBOLS' in features_list):
 			symbols = []
 			if('LENGTH' in features_list):
@@ -70,6 +77,8 @@ def extractFeatures(features_list, reextract_features):
 					symbols.append(sum)
 			df['SYMBOLS'] = symbols
 
+		# Finds the frequency of digits in each comment
+		# unless length is unavailable
 		if('DIGITS' in features_list):
 			digits = []
 			if('LENGTH' in features_list):
@@ -88,6 +97,7 @@ def extractFeatures(features_list, reextract_features):
 					digits.append(sum)
 			df['DIGITS'] = digits
 
+		# Finds the number of URLs in each comment
 		if('URLS' in features_list):
 			urls = []
 			for i in range(0, len(df['CONTENT'])):
@@ -98,6 +108,7 @@ def extractFeatures(features_list, reextract_features):
 				urls.append(sum)
 			df['URLS'] = urls
 
+		# Adds these five features to the list features
 		features = []
 		individual_features = []
 		for i in range(0, len(df['CONTENT'])):
@@ -114,6 +125,8 @@ def extractFeatures(features_list, reextract_features):
 				individual_features.append(df['URLS'][i])
 			features.append(individual_features)
 
+		# Finds the frequency of each of the words listed in spam_words and
+		# adds these to the features list
 		if('WORDS' in features_list):
 			spam_words = ['and','to','out','my','a','this','the','on','you','check','of','video','for','me','it','i','if','youtube','you','subscribe','like','can','in','please','just','is','channel','have','so','your','be','will','guys','music','at','money','from','up','but','as','make','get','would','do','all','with','our','new','are','am','that','who','comment','videos','really','us','or','know','u','not','song','people','could','more','playlist','help','see','called','I\'m','should','out','give','making','working','some','website','does']
 			word_count = []
@@ -125,6 +138,8 @@ def extractFeatures(features_list, reextract_features):
 			for i in range(0, len(word_count)):
 				features[i] = features[i] + word_count[i]
 
+		# Saves extracted feature to the features_list file so that processing
+		# doesn't have to be unnecessarily repeated when testing
 		with open('features_list.csv', mode='w') as features_file:
 			csv_writer = csv.writer(features_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 			for i in features:	
@@ -134,8 +149,8 @@ def extractFeatures(features_list, reextract_features):
 
 	else:
 
+		# Loads features from the features_list file
 		features = []
-
 		with open('features_list.csv', mode='r') as features_file:
 			csv_reader = csv.reader(features_file, delimiter=',')
 			line_count = 0
@@ -147,7 +162,7 @@ def extractFeatures(features_list, reextract_features):
 
 	return features
 
-#Create labels list and split data for training and testing
+# Create labels list and split data for training and testing
 def splitData(proportion_testing, features):
 
 	labels = np.array(df['CLASS'])
@@ -157,13 +172,15 @@ def splitData(proportion_testing, features):
 	return train_features, test_features, train_labels, test_labels
 
 
-#Train model and create predictions on test data
+# Train model and create predictions on test data
 def runModel(train_features, test_features, train_labels, test_labels):
 
+	# Loads and fits model
 	model = RandomForestClassifier(n_estimators = 100)
 	model.fit(train_features, train_labels);
 	predictions_float = model.predict(test_features)
 
+	# Chooses spam comments above probability threshold
 	predictions = []
 	for i in predictions_float:
 		if(i > 0.5):
@@ -173,6 +190,7 @@ def runModel(train_features, test_features, train_labels, test_labels):
 
 	actual_values = test_labels
 
+	# Calculates the proportion of comments labelled correctly
 	predictions_correct = 0
 	predictions_wrong = 0
 	for i in range(0, len(actual_values)):
@@ -184,7 +202,7 @@ def runModel(train_features, test_features, train_labels, test_labels):
 
 	return predictions, actual_values, predictions_ratio, model
 
-#Guess 1 or 0 to get an idea of the proportion we would expect to get right randomly
+# Guess 1 or 0 to get an idea of the proportion we would expect to get right randomly
 def runRandom(actual_values):
 
 	random_guesses = []
@@ -192,6 +210,8 @@ def runRandom(actual_values):
 	random_correct = 0
 	random_wrong = 0
 
+	# Creates a baseline proportion of comments labelled correctly by randomly
+	# assigning a 1 or 0 to each comment
 	for i in range(0, len(actual_values)):
 		random_number = random()
 		if(random_number > 0.5):
@@ -208,14 +228,14 @@ def runRandom(actual_values):
 
 	return random_ratio
 
-#Check difference in proportion predicted right and proportion guessed right
+# Check difference in proportion predicted right and proportion guessed randomly
 def checkImprovement(predictions_ratio, random_ratio):
 
 	improvement = (predictions_ratio - random_ratio) * 100
 
 	return improvement
 
-#Run all functions
+# Runs all functions for tests and returns the improvement
 def main(file_path, features_list, proportion_testing, reextract_features):
 	importData(file_path)
 	features = extractFeatures(features_list, reextract_features)
@@ -224,6 +244,7 @@ def main(file_path, features_list, proportion_testing, reextract_features):
 	random_ratio = runRandom(actual_values)
 	return checkImprovement(predictions_ratio, random_ratio)
 
+# Runs all the functions and saves the model for use in main.py
 def train(file_path, features_list, proportion_testing, reextract_features):
 	importData(file_path)
 	features = extractFeatures(features_list, reextract_features)
@@ -231,4 +252,6 @@ def train(file_path, features_list, proportion_testing, reextract_features):
 	predictions, actual_values, predictions_ratio, model = runModel(train_features, test_features, train_labels, test_labels)
 	pickle.dump(model, open('model.sav', 'wb'))
 
-#train(FILE_PATH, FEATURES_LIST, PROPORTION_TESTING, True)
+# Runs the train function
+# Leave commented unless refitting the model
+# train(FILE_PATH, FEATURES_LIST, PROPORTION_TESTING, True)

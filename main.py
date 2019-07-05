@@ -4,18 +4,26 @@ import numpy as np
 import pandas as pd
 import pickle
 
-FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/" #Path to Youtube Spam Cleaning Folder
-FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'URLS', 'WORDS'] #List of features to be used
+# Path to project folder and list of features to be used. If FEATURES_LIST is changed
+# then the model will have to be retrained with the same features
+FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/"
+FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'URLS', 'WORDS']
 
+# Load in comments to be searched
 df = pd.read_csv(FILE_PATH+"Comments.csv")
 
+# Load in trained model
 model = pickle.load(open('Training/model.sav', 'rb'))
 
+# Analyses all comments and creates a list of the features from each comment
 def extractFeatures(features_list):
 
+	# Finds the length of each comment
 	if('LENGTH' in features_list):
 		df['LENGTH'] = df['CONTENT'].str.len()
 
+	# Finds the frequency of upper case characters in each comment
+	# unless length is unused
 	if('CAPITALS' in features_list):
 		capitals = []
 		if('LENGTH' in features_list):
@@ -34,6 +42,8 @@ def extractFeatures(features_list):
 				capitals.append(sum)
 		df['CAPITALS'] = capitals
 
+	# Finds the frequency of sybmols in each comment
+	# unless length is unused
 	if('SYMBOLS' in features_list):
 		symbols = []
 		if('LENGTH' in features_list):
@@ -52,6 +62,8 @@ def extractFeatures(features_list):
 				symbols.append(sum)
 		df['SYMBOLS'] = symbols
 
+	# Finds the frequency of digits in each comment
+	# unless length is unused
 	if('DIGITS' in features_list):
 		digits = []
 		if('LENGTH' in features_list):
@@ -70,6 +82,7 @@ def extractFeatures(features_list):
 				digits.append(sum)
 		df['DIGITS'] = digits
 
+	# Finds the number of URLs in each comment
 	if('URLS' in features_list):
 		urls = []
 		for i in range(0, len(df['CONTENT'])):
@@ -80,6 +93,7 @@ def extractFeatures(features_list):
 			urls.append(sum)
 		df['URLS'] = urls
 
+	# Adds these five features to the features list
 	features = []
 	individual_features = []
 	for i in range(0, len(df['CONTENT'])):
@@ -96,6 +110,8 @@ def extractFeatures(features_list):
 			individual_features.append(df['URLS'][i])
 		features.append(individual_features)
 
+	# Finds the frequency of all the words listed in spam_words and 
+	# adds them the the features list
 	if('WORDS' in features_list):
 		spam_words = ['and','to','out','my','a','this','the','on','you','check','of','video','for','me','it','i','if','youtube','you','subscribe','like','can','in','please','just','is','channel','have','so','your','be','will','guys','music','at','money','from','up','but','as','make','get','would','do','all','with','our','new','are','am','that','who','comment','videos','really','us','or','know','u','not','song','people','could','more','playlist','help','see','called','I\'m','should','out','give','making','working','some','website','does']
 		word_count = []
@@ -109,8 +125,11 @@ def extractFeatures(features_list):
 
 	return features
 
+# Runs extractFeatures and finds probabilites from model
 features = extractFeatures(FEATURES_LIST)
 probabilities = model.predict_proba(features)
+
+# Selects comments whose probability is above the 60% threshold
 predictions = []
 for i in probabilities:
 	if(i[0] > 0.6):
@@ -118,8 +137,8 @@ for i in probabilities:
 	else:
 		predictions.append(1)
 
+# Adds predictions to the csv file.
 df['CLASS'] = predictions
-
 df[['CONTENT', 'CLASS']].to_csv(FILE_PATH+"Comments.csv", index=False)
 
 print(predictions)
