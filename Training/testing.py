@@ -2,10 +2,10 @@ import training
 import matplotlib.pyplot as plt
 import numpy as np
 
-NUMBER_OF_REPEATS = 100
+NUMBER_OF_REPEATS = 1
 FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Training/Data"
 PROPORTION_TESTING = 0.1
-ALL_FEATURES = [['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS']]
+ALL_FEATURES = [['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS', 'URLS'], ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS']]
 
 results = []
 individual_results = []
@@ -34,7 +34,7 @@ for i in results:
 plt.rcdefaults()
 fig, ax = plt.subplots()
 
-features = ('W')
+features = ('URLS', 'WORDS')
 y_pos = np.arange(len(features))
 
 ax.barh(y_pos, average_results, align='center')

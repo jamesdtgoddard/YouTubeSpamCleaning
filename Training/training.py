@@ -9,7 +9,7 @@ import pickle
 
 #Set default parameters
 FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Training/Data" #Path to folder containing csv data files
-FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS'] #List of features to be used
+FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS', 'URLS'] #List of features to be used
 PROPORTION_TESTING = 0.001 #Percentage of data to be split for testing
 
 #Load all csv files into dataframe 'df'
@@ -88,6 +88,16 @@ def extractFeatures(features_list, reextract_features):
 					digits.append(sum)
 			df['DIGITS'] = digits
 
+		if('URLS' in features_list):
+			urls = []
+			for i in range(0, len(df['CONTENT'])):
+				sum = 0
+				for j in df['CONTENT'][i].split():
+					if('https://' in j or 'www.' in j or 'http://'):
+						sum += 1
+				urls.append(sum)
+			df['URLS'] = urls
+
 		features = []
 		individual_features = []
 		for i in range(0, len(df['CONTENT'])):
@@ -100,6 +110,8 @@ def extractFeatures(features_list, reextract_features):
 				individual_features.append(df['SYMBOLS'][i])
 			if('DIGITS' in features_list):
 				individual_features.append(df['DIGITS'][i])
+			if('URLS' in features_list):
+				individual_features.append(df['URLS'][i])
 			features.append(individual_features)
 		features = np.array(features)
 
