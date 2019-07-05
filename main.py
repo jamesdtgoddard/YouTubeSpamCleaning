@@ -113,4 +113,9 @@ def extractFeatures(features_list):
 features = extractFeatures(FEATURES_LIST)
 predictions = model.predict(features)
 
+df['CLASS'] = predictions
+
+with open('Comments.csv', 'w') as csv_file:
+	csv_file.write(df[['CONTENT', 'CLASS']].to_csv(index=False))
+
 print(predictions)
