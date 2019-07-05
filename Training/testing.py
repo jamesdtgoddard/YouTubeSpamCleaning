@@ -4,10 +4,10 @@ import numpy as np
 
 # Define the number of repeats, the path to the data folder, the proportion to
 # be used for testing and the list of lists of features to compared
-NUMBER_OF_REPEATS = 10
+NUMBER_OF_REPEATS = 100
 FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Training/Data"
 PROPORTION_TESTING = 0.1
-ALL_FEATURES = [['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS', 'URLS'], ['LENGTH']]
+ALL_FEATURES = [['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS', 'URLS']]
 
 results = []
 individual_results = []
@@ -40,7 +40,7 @@ for i in results:
 plt.rcdefaults()
 fig, ax = plt.subplots()
 
-features = ('URLS', 'LENGTH')
+features = ('Features')
 y_pos = np.arange(len(features))
 
 ax.barh(y_pos, average_results, align='center')
