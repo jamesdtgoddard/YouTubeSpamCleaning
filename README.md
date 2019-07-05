@@ -26,11 +26,13 @@ The model's input is a csv file with all the comments under the heading 'CONTENT
 ## Improvement
 
 To test the model throughout development I have compared the model's effectiveness against previous versions. I have measured effectiveness as the difference in percentage of comments labelled correctly by the model compared to a baseline that labels comments randomly (and usually labels around 50% correctly). The optimal effectiveness would therefore be around 50%. The following bar chart shows a comparison of the different combinations of the first features I implemented (L - Length, C - Capitals, S - Symbols):
-![LCS](https://raw.githubusercontent.com/jamesdtgoddard/YouTubeSpamCleaning/master/Training/Tests/LCS.png)It is evident that the model at this point was most effective when all three features were used simultaneously. The model was achieving an effectiveness of  25% meaning it labelled roughly 75% of comments correctly.
+![LCS](https://raw.githubusercontent.com/jamesdtgoddard/YouTubeSpamCleaning/master/Training/Tests/LCS.png)
+It is evident that the model at this point was most effective when all three features were used simultaneously. The model was achieving an effectiveness of  25% meaning it labelled roughly 75% of comments correctly.
 
 Below are a couple of bar charts showing the effectiveness of the model after new features were added:
 ![LCS](https://raw.githubusercontent.com/jamesdtgoddard/YouTubeSpamCleaning/master/Training/Tests/LCSD.png)![LCS](https://raw.githubusercontent.com/jamesdtgoddard/YouTubeSpamCleaning/master/Training/Tests/AllWords.png)
-![LCS](https://raw.githubusercontent.com/jamesdtgoddard/YouTubeSpamCleaning/master/Training/Tests/URLS.png)Now that the model makes use of all of these features it achieves an effectiveness of over 40%, meaning it labels roughly 90% of comments correctly.
+![LCS](https://raw.githubusercontent.com/jamesdtgoddard/YouTubeSpamCleaning/master/Training/Tests/URLS.png)
+Now that the model makes use of all of these features it achieves an effectiveness of over 40%, meaning it labels roughly 90% of comments correctly.
 
 ## Real-world results
 
