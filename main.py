@@ -109,9 +109,14 @@ def extractFeatures(features_list):
 
 	return features
 
-
 features = extractFeatures(FEATURES_LIST)
-predictions = model.predict(features)
+probabilities = model.predict_proba(features)
+predictions = []
+for i in probabilities:
+	if(i[0] > 0.6):
+		predictions.append(0)
+	else:
+		predictions.append(1)
 
 df['CLASS'] = predictions
 
