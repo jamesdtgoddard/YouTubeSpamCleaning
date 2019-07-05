@@ -115,7 +115,6 @@ predictions = model.predict(features)
 
 df['CLASS'] = predictions
 
-with open('Comments.csv', 'w') as csv_file:
-	csv_file.write(df[['CONTENT', 'CLASS']].to_csv(index=False))
+df[['CONTENT', 'CLASS']].to_csv(FILE_PATH+"Comments.csv", index=False)
 
 print(predictions)
