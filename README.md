@@ -1,4 +1,4 @@
-# Youtube Spam Cleaning
+# YouTube Spam Cleaning
 
 This program recognises spam amongst YouTube comments. It currently predicts whether a comment is spam or not with a 90% accuracy.
 
