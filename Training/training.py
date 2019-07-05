@@ -9,7 +9,7 @@ import pickle
 
 #Set default parameters
 FILE_PATH = "/Users/relativeinsight/Desktop/Youtube Spam Cleaning/Training/Data" #Path to folder containing csv data files
-FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'WORDS', 'URLS'] #List of features to be used
+FEATURES_LIST = ['LENGTH', 'SYMBOLS', 'CAPITALS', 'DIGITS', 'URLS', 'WORDS'] #List of features to be used
 PROPORTION_TESTING = 0.001 #Percentage of data to be split for testing
 
 #Load all csv files into dataframe 'df'
@@ -93,7 +93,7 @@ def extractFeatures(features_list, reextract_features):
 			for i in range(0, len(df['CONTENT'])):
 				sum = 0
 				for j in df['CONTENT'][i].split():
-					if('https://' in j or 'www.' in j or 'http://'):
+					if('https://' in j or 'www.' in j or 'http://' in j):
 						sum += 1
 				urls.append(sum)
 			df['URLS'] = urls
@@ -113,30 +113,17 @@ def extractFeatures(features_list, reextract_features):
 			if('URLS' in features_list):
 				individual_features.append(df['URLS'][i])
 			features.append(individual_features)
-		features = np.array(features)
-
-		word_features = {}
 
 		if('WORDS' in features_list):
 			spam_words = ['and','to','out','my','a','this','the','on','you','check','of','video','for','me','it','i','if','youtube','you','subscribe','like','can','in','please','just','is','channel','have','so','your','be','will','guys','music','at','money','from','up','but','as','make','get','would','do','all','with','our','new','are','am','that','who','comment','videos','really','us','or','know','u','not','song','people','could','more','playlist','help','see','called','I\'m','should','out','give','making','working','some','website','does']
-			last_number = 0
-			for i in spam_words:
-				word_features[i] = 0
-			for j in range(0, len(df['CONTENT'])):
-				for k in df['CONTENT'][j].split():
-					if(k.lower() in spam_words):
-						word_features[k.lower()] += 1
-				for i in word_features:
-					features = features.tolist()
-					features[j].append(word_features[i])
-					features = np.array(features)
-				for i in spam_words:
-					word_features[i] = 0
-				if(int(j/1955 * 100) % 10 == 0 and int(j/1955 * 100) != last_number):
-					print("~ "+str(int(j/1955 * 100))+"% of features extracted.")
-					last_number += 10
-
-		features = features.tolist()
+			word_count = []
+			for i in range(0, len(df['CONTENT'])):
+			    word_count.append([])
+			for i in range(0, len(df['CONTENT'])):
+   				for j in spam_words:
+   				    word_count[i].append((' '+df['CONTENT'][i]+' ').count(' ' + j + ' '))
+			for i in range(0, len(word_count)):
+				features[i] = features[i] + word_count[i]
 
 		with open('features_list.csv', mode='w') as features_file:
 			csv_writer = csv.writer(features_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
